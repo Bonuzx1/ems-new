@@ -2,14 +2,16 @@
 include "../class/Ems.class.php";
 
 $ems = new Ems();
-$ems->define();
 if(isset($_POST['submit'])){
-    print_r($_POST);
+    $filename = basename($_FILES["blog_image"]["name"]);
+    $target_dir = "../uploads/blog_images/";
+    $image_name = "admin/uploads/blog_images/" . $filename;
     $user = $ems->getCurUser();
     if ($_POST['blog_publishDate']===''){
         $scheduled = date('Y-m-d H:m:s');
 
     }else
+
     {
         $temp = strtotime($_POST['blog_publishDate']);
         $scheduled = date('Y-m-d H-m-s', $temp);
@@ -25,15 +27,12 @@ $author = $user['user_id']; $category = $_POST['blog_category']; $tag = $_POST['
 $created = date('Y-m-d H:m:s'); $comment = '56'; $status = '1';
 $permalink = 'localhost/ems-new/?p=';
 
-    $image_name = $_FILES['blog_image']['name'];
-    print_r($image_name);exit;
 
 if($res = $ems->post_new($title, $content, $author, $category, $tag, $created,
-    $scheduled, $comment, $status, $permalink, $image_name)) {
+    $scheduled, $comment, $status, $permalink, $filename)) {
 //    print_r($res);exit;
 
     //image
-    $target_dir = "../uploads/blog_images/".$ems->insertId();
     $target_file = $target_dir . basename($_FILES["blog_image"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -67,7 +66,7 @@ if($res = $ems->post_new($title, $content, $author, $category, $tag, $created,
 
 }
 else{
-    header('Location: '.$_SERVER['HTTP_REFERER']);
+    $ems->goToHeader(ADMIN_BASE_URL.'?page=post&msg=Post Not Added Success  fully');
 
 }
 

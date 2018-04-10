@@ -13,15 +13,16 @@
             <div id="prev-button"><i class="fa fa-chevron-up"></i></div>
             <ul class="latest_postnav">
                 <?php $all = $db->fillTable('ems_post');
-                $count = 0;
-                foreach ($all as $row){?>
+                foreach ($all as $row){
+                    $src = $row['post_image'];
+                    ?>
                 <li>
-                    <div class="media"> <a href="<?='veiw.php?id='.$row['post_id']?>" class="media-left"> <img alt="" src="images/post_img1.jpg"> </a>
-                        <div class="media-body"> <a href="<?='veiw.php?id='.$row['post_id']?>" class="catg_title"> <?=$row['post_title']?> <?=$count?></a> </div>
+                    <div class="media"> <a href="admin/uploads/blog_images/<?=$src?>" class="media-left"> <?php echo '<img src="admin/uploads/blog_images/'.$src.'"/>';?> </a>
+                        <div class="media-body"> <a href="<?='view.php?id='.$row['post_id']?>" class="catg_title"> <?=$row['post_title']?> </a> </div>
                     </div>
                 </li>
 
-                <?php $count++; }?>
+                <?php  }?>
             </ul>
             <div id="next-button"><i class="fa  fa-chevron-down"></i></div>
         </div>

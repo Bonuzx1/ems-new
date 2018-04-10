@@ -28,8 +28,8 @@ $status = $detail['post_status'];
               <li class="active"><?=$post_cat?></li>
             </ol>
             <h1><?=$post_title?></h1>
-            <div class="post_commentbox"> <a href="#"><i class="fa fa-user"></i><?=$post_author?></a> <span><i class="fa fa-calendar"></i><?=$date?></span> <a href="#"><i class="fa fa-tags"></i><?=$post_cat?></a> </div>
-            <div class="single_page_content"> <?php echo '<img class="img-center" src="data:image/jpeg;base64,'.base64_encode( $post_image ).'"/>';?>
+            <div class="post_commentbox"> <a href="search.php?sort=user"><i class="fa fa-user"></i><?=$post_author?></a> <span><i class="fa fa-calendar"></i><?=$date?></span> <a href="#"><i class="fa fa-tags"></i><?=$post_cat?></a> </div>
+                <div class="single_page_content"> <?php echo '<img class="img-center" src="admin/uploads/blog_images/'.$post_image.'"/>';?>
               <p><?=$post_content?></p>
             <div class="social_link">
                 Share:
@@ -49,8 +49,8 @@ $status = $detail['post_status'];
                   $all = $db->useRawQuery("SELECT * FROM ems_post WHERE post_category = ".$detail['post_category']." LIMIT 3");
                   foreach ($all as $row){ ?>
                 <li>
-                  <div class="media"> <a class="media-left" href="veiw.php"> <img src="images/post_img1.jpg" alt=""> </a>
-                    <div class="media-body"> <a class="catg_title" href="veiw.php"> Aliquam malesuada diam eget turpis varius</a> </div>
+                  <div class="media"> <a class="media-left" href="view.php"> <img src="images/post_img1.jpg" alt=""> </a>
+                    <div class="media-body"> <a class="catg_title" href="view.php"> Aliquam malesuada diam eget turpis varius</a> </div>
                   </div>
                 </li>
                   <?php }?>
@@ -78,8 +78,8 @@ $status = $detail['post_status'];
                         <?php $all = $db->fillTable('ems_post');
                         foreach ($all as $row){?>
                             <li>
-                                <div class="media wow fadeInDown"> <a href="veiw.php?id=<?=$row['post_id']?>" class="media-left"> <?php echo '<img src="data:image/jpeg;base64,'.base64_encode( $row['post_image'] ).'"/>';?> </a>
-                                    <div class="media-body"> <a href="veiw.php" class="catg_title"> <?=$row['post_title']?></a> </div>
+                                <div class="media wow fadeInDown"> <a href="view.php?id=<?=$row['post_id']?>" class="media-left"> <?php echo '<img src="admin/uploads/blog_images/'.$row['post_image'].'"/>';?> </a>
+                                    <div class="media-body"> <a href="view.php" class="catg_title"> <?=$row['post_title']?></a> </div>
                                 </div>
                             </li>
                         <?php }?>
@@ -98,7 +98,7 @@ $status = $detail['post_status'];
                                 <?php $all = $db->fillTable('ems_post_category');
                                 $count = 0;
                                 foreach ($all as $row){?>
-                                <li class="cat-item"><a href="<?='veiw.php?type=cat&id='.$row['cat_id']?>"><?=$row['cat_name']?></a></li>
+                                <li class="cat-item"><a href="<?='view.php?type=cat&id='.$row['cat_id']?>"><?=$row['cat_name']?></a></li>
                                 <?php }?>
                             </ul>
                         </div>
@@ -110,23 +110,23 @@ $status = $detail['post_status'];
                         <div role="tabpanel" class="tab-pane" id="comments">
                             <ul class="spost_nav">
                                 <li>
-                                    <div class="media wow fadeInDown"> <a href="veiw.php" class="media-left"> <img alt="" src="images/post_img1.jpg"> </a>
-                                        <div class="media-body"> <a href="veiw.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
+                                    <div class="media wow fadeInDown"> <a href="view.php" class="media-left"> <img alt="" src="images/post_img1.jpg"> </a>
+                                        <div class="media-body"> <a href="view.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="media wow fadeInDown"> <a href="veiw.php" class="media-left"> <img alt="" src="images/post_img2.jpg"> </a>
-                                        <div class="media-body"> <a href="veiw.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
+                                    <div class="media wow fadeInDown"> <a href="view.php" class="media-left"> <img alt="" src="images/post_img2.jpg"> </a>
+                                        <div class="media-body"> <a href="view.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="media wow fadeInDown"> <a href="veiw.php" class="media-left"> <img alt="" src="images/post_img1.jpg"> </a>
-                                        <div class="media-body"> <a href="veiw.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
+                                    <div class="media wow fadeInDown"> <a href="view.php" class="media-left"> <img alt="" src="images/post_img1.jpg"> </a>
+                                        <div class="media-body"> <a href="view.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="media wow fadeInDown"> <a href="veiw.php" class="media-left"> <img alt="" src="images/post_img2.jpg"> </a>
-                                        <div class="media-body"> <a href="veiw.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
+                                    <div class="media wow fadeInDown"> <a href="view.php" class="media-left"> <img alt="" src="images/post_img2.jpg"> </a>
+                                        <div class="media-body"> <a href="view.php" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
                                     </div>
                                 </li>
                             </ul>
