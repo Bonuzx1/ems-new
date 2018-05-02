@@ -69,10 +69,10 @@
         $('#init').on('click', function(e) {
           $('#edit').on('froalaEditor.initialized', function (e, editor) {
             console.log('Initialized')
-          })
+          });
 
           $('#edit').removeClass('fr-view').froalaEditor();
-        })
+        });
         $('#destroy').on('click', function (e) {
           $('#edit').froalaEditor('destroy');
           $('#edit').addClass('fr-view');

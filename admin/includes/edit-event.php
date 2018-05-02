@@ -5,6 +5,8 @@
  * Date: 3/23/2018
  * Time: 3:10 AM
  */
+
+$event = $db->getOneValue('ems_event', 'event_id', $_GET['id']);
 ?>
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -27,7 +29,7 @@
             <h3 class="box-title">Add New Event</h3>
         </div>
         <div class="box-body">
-            <h3 class="label-danger big">Click on any event to edit it</h3>
+            <h3 class="label-danger big" style="border-radius: 3px">Double-click on any event to edit it</h3>
             <div id="calendar"></div>
         </div>
         <!-- /.box-body -->
@@ -38,6 +40,7 @@
     </div>
     <!-- /.box -->
 </section>
+
 <!-- Modal -->
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -48,11 +51,16 @@
                     <h4 class="modal-title" id="myModalLabel">Edit Event</h4>
                 </div>
                 <div class="modal-body">
-
+                    <div class="form-group">
+                        <label for="image" class="col-sm-2 control-label">Event Picture</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control filename" accept="image/*" name="image" id="image">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="title" class="col-sm-2 control-label">Title</label>
                         <div class="col-sm-10">
-                            <input type="text" name="title" class="form-control" id="title" placeholder="Title">
+                            <input type="text" value="<?=$event['event_title']?>" name="title" class="form-control" id="title" placeholder="Title">
                         </div>
                     </div>
                     <div class="form-group">
@@ -72,6 +80,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="date" class="col-sm-2 control-label">Event Date</label>
+                        <div class="col-sm-10">
+                            <input type="date" name="start" id="start" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="checkbox">
                                 <label class="text-danger"><input type="checkbox"  name="delete"> Delete event</label>
@@ -79,7 +93,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="id" class="form-control" id="id">
+                    <input type="hidden" value="<?=$_GET['id']?>" name="id" class="form-control" id="id">
 
 
                 </div>

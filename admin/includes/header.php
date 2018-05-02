@@ -5,6 +5,10 @@ if(!$_SESSION['loggedin'])
 if (!isset($_GET['page'])||$_GET['page']=='')
     header("Location: ?page=dashboard");
 
+$user = $db->getCurUser();
+
+$comments = $db->getOneValue('ems_comment', 'comment_isApproved', '0');
+$comment = count($comments)+1;
 
 ?>
 <!DOCTYPE html>
@@ -16,6 +20,7 @@ if (!isset($_GET['page'])||$_GET['page']=='')
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
+
     <link rel="stylesheet" href="asset/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="asset/font-awesome/css/font-awesome.min.css">
@@ -37,11 +42,47 @@ if (!isset($_GET['page'])||$_GET['page']=='')
         <link rel="stylesheet" href="asset/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" />
         <link rel="stylesheet" href="asset/iCheck/all.css" />
         <link rel="stylesheet" href="asset/timepicker/bootstrap-timepicker.min.css" />
-
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 
     <!-- Google Font -->
+    <style>
+    a{
+    color: white;
+    }
+    a:hover{
+    color: #f9f9f9;
+    }
+    .hide-bullets {
+    list-style:none;
+    margin-left: -40px;
+    margin-top:20px;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    width: 100%;
+}
+#drop-area{
+border: 3px dotted #8e88ff;
+width: 100%;
+height: 200%;
+padding: 50px;
+}
+.drop-area-active{
+background-color: #9a93ff;
+}
+.drop-area-not-active{
+background-color: #0c0c0c;
+}
+#image-drop-header{
+padding: 10px;
+}
+</style>
 </head>
 <!-- ADD THE CLASS sidebar-collapse TO HIDE THE SIDEBAR PRIOR TO LOADING THE SITE -->
 <body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
@@ -153,13 +194,13 @@ if (!isset($_GET['page'])||$_GET['page']=='')
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="asset/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Sean Biggy</span>
+                            <img src="uploads/<?=$user['user_picture']?>" class="user-image" alt="User Image">
+                            <span class="hidden-xs"><?=$user['user_first_name']?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="asset/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                <img src="uploads/<?=$user['user_picture']?>" class="img-circle" alt="User Image">
 
                                 <p>
                                     Sean Biggy - Developer
@@ -181,7 +222,7 @@ if (!isset($_GET['page'])||$_GET['page']=='')
                     </li>
                     <!-- Control Sidebar Toggle Button -->
                     <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+<!--                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>-->
                     </li>
                 </ul>
             </div>
@@ -197,10 +238,10 @@ if (!isset($_GET['page'])||$_GET['page']=='')
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="asset/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="uploads/<?=$user['user_picture']?>" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Sean Biggy</p>
+                    <p><?=$user['user_first_name']?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -241,10 +282,15 @@ if (!isset($_GET['page'])||$_GET['page']=='')
                     </ul>
                 </li>
                 <li>
+                    <a href="?page=gallery">
+                        <i class="fa fa-image"></i> <span>Gallery</span>
+                    </a>
+                </li>
+                <li>
                     <a href="?page=comment">
                         <i class="fa fa-comments-o"></i> <span>Comments</span>
                         <span class="pull-right-container">
-              <small class="label pull-right bg-green">4</small>
+              <small class="label pull-right bg-green"><?=$comment?></small>
             </span>
                     </a>
                 </li>
@@ -259,6 +305,20 @@ if (!isset($_GET['page'])||$_GET['page']=='')
                     <ul class="treeview-menu">
                         <li><a href="?page=users"><i class="fa fa-users"></i> All Users</a></li>
                         <li><a href="?page=users&type=new"><i class="fa fa-user-plus"></i> New User</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-clipboard"></i>
+                        <span>Report</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="?page=sreport"><i class="fa fa-th-list"></i> Subscribers</a></li>
+                        <li><a href="?page=ereport"><i class="fa fa-plus-circle"></i> Events</a></li>
+                        </li>
                     </ul>
                 </li>
                 <li class="">

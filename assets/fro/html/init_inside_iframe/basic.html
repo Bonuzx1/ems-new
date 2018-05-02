@@ -84,10 +84,10 @@
         if (iframeDoc.readyState == 'complete' || iframeDoc.readyState == 'interactive') {
           $(iframe).contents().find('#edit').froalaEditor({
             scrollableContainer: $(iframe).contents().find('body')
-          })
+          });
 
           clearInterval(timer);
-          return;
+
         }
       }, 500);
     })

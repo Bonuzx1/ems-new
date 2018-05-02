@@ -1,4 +1,6 @@
-<?php session_start();?>
+<?php session_start();
+$msg = (isset($_GET['msg']))? $_GET['msg']: "";
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,6 +29,7 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
       <h3 class="login-box-msg"><b>SIGN IN</b></h3>
+      <h4 class="login-box-msg text-danger"><b><?=$msg?></b></h4>
 
     <form action="../php_actions/login.php" method="post">
 

@@ -60,10 +60,10 @@ if($res = $ems->post_new($title, $content, $author, $category, $tag, $created,
             $msg = "Sorry, there was an error uploading your file.";
         }
     }
-    if ($msg != 'uploaded')
-        $ems->goToHeader(ADMIN_BASE_URL.'?page=post&msg=Post Added But Error Adding Image');
-    $ems->goToHeader(ADMIN_BASE_URL.'?page=post&msg=Post Successfully Added');
-
+	if ($msg != 'uploaded')
+		$ems->goToHeader(ADMIN_BASE_URL.'?page=post&msg=Post Added but image not uploaded');
+	$ems->goToHeader(ADMIN_BASE_URL.'/php_actions/sendPostSms.php?title='.$_POST['blog_title']);
+	
 }
 else{
     $ems->goToHeader(ADMIN_BASE_URL.'?page=post&msg=Post Not Added Success  fully');

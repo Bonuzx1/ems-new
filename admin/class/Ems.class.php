@@ -8,12 +8,40 @@ class Ems{
     private $database_username = 'root';
     private $database_password = '';
     private $database_name = 'ems-new';
+	private $EXPIRE_AFTER = 5;
+	
 
     function __construct()
     {
         $this->db = new PDODb($this->database_type, $this->database_host, $this->database_username, $this->database_password, $this->database_name);
         define('BASE_URL', 'http://localhost/ems-new');
         define('ADMIN_BASE_URL', 'http://localhost/ems-new/admin/');
+    }
+    function isexpire($time)
+    {
+	    $EXPIRE_SECONDS = $this->EXPIRE_AFTER * 60;
+	    if($time >= $EXPIRE_SECONDS){
+		    //User has been inactive for too long.
+		    //Kill their session.
+		    session_unset();
+		    session_destroy();
+	    }
+	
+    }
+    function newsubscriber($name, $phone)
+    {
+    	$today = date("Y-m-d H-m-s");
+    	$data_q = [
+    		'sub_name' => $name,
+		    'sub_phone' => $phone,
+		    'sub_received_text' => '0',
+		    'sub_status' => '1',
+		    'sub_date_registered' => $today
+	    ];
+	    if ($res = $this->db->insert('ems_subscribers', $data_q))
+		    return true;
+	    else
+		    return $this->db->getLastErrorCode();
     }
     function post_new($title, $content, $author, $category, $tag, $created, $scheduled, $comment, $status, $permalink, $image)
     {
@@ -34,34 +62,81 @@ class Ems{
         if ($res = $this->db->insert('ems_post', $ems_post))
             return $res;
         else
-            return json_encode($ems_post);
+            return $this->db->getLastErrorCode();
+    }
+    function addComment($name, $email, $comment, $post)
+    {
+    	$comm = [
+    		'comment_username' => $name,
+		    'comment_email' => $email,
+		    'comment_text' => $comment,
+		    'comment_post_id' => $post
+	    ];
+    	if ($this->db->insert('ems_comment', $comm))
+	    {
+	    	return true;
+	    }
+	    return $this->db->getLastError();
+    }
+function addEventComment($name, $email, $comment, $event)
+    {
+    	$comm = [
+    		'comment_username' => $name,
+		    'comment_email' => $email,
+		    'comment_text' => $comment,
+		    'comment_event_id' => $event
+	    ];
+    	if ($this->db->insert('ems_comment', $comm))
+	    {
+	    	return true;
+	    }
+	    return $this->db->getLastError();
     }
     function fillCombo($table, $condition = null, $conditionValue = null)
     {
         if ($condition != null)
             $this->db->where($condition, $conditionValue);
-        $all = $this->db->get($table);
-        return $all;
+        if ($all = $this->db->get($table))
+            return $all;
+        return $this->db->getLastError();
     }
-    function new_event($title, $color, $date)
+    function new_event($title, $color, $date, $location, $image)
     {
         $ems_event = [
             'event_title' => $title,
             'event_color' => $color,
             'event_date' => $date,
+            'event_image' => $image,
+	        'event_venue' => $location,
+            'event_author' => $_SESSION['user_id']
+
         ];
 
         if ($this->db->insert('ems_event', $ems_event))
             return true;
         else
-            return json_encode($ems_event);
+            return $this->db->getLastError();
+    }
+    function addEventMedia($event, $image, $video)
+    {
+    	$gallery = [
+    		'gallery_image' => $image,
+		    'gallery_video' => $video,
+		    'gallery_event_id' => $event
+	    ];
+    	if ($this->db->insert('ems_gallery', $gallery))
+	    {
+	    	return true;
+	    }
+	    return $this->db->getLastError();
     }
     function fillTable($table, $condition = null, $conditionValue = null)
     {
         if ($condition != null && $conditionValue != null)
             $this->db->where($condition, $conditionValue);
-        $all = $this->db->get($table);
-        return $all;
+        if ($all = $this->db->get($table))
+            return $all;
+        return $this->db->getLastError();
     }
     function delPost($table, $id)
     {
@@ -71,18 +146,14 @@ class Ems{
         {
             return true;
         }else
-            return false;
+            return $this->db->getLastError();
     }
     function getOneValue($table, $condition, $conditionValue)
     {
         $this->db->where($condition, $conditionValue);
-        $owner = $this->db->getOne($table);
-        return $owner;
-    }
-    function define()
-    {
-        define('BASE_URL', 'http://localhost/ems-new');
-        define('ADMIN_BASE_URL', 'http://localhost/ems-new/admin/');
+        if ($owner = $this->db->getOne($table))
+            return $owner;
+        return $this->db->getLastError();
     }
     function delEvent($id)
     {
@@ -92,7 +163,7 @@ class Ems{
         {
             return true;
         }else
-            return false;
+            return $this->db->getLastError();
     }
     function delUser($id)
     {
@@ -112,6 +183,7 @@ class Ems{
         $all = $this->db->getOne('ems_users', '*');
         if (empty($all))
             return false;
+        $_SESSION['user_id'] = $all['user_id'];
         return true;
     }
     function logout()

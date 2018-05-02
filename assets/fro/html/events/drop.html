@@ -76,7 +76,7 @@
         enter: $.FroalaEditor.ENTER_P
       })
       .on ('froalaEditor.drop', function (e, editor, dropEvent) {
-        console.log ('drop')
+        console.log ('drop');
 
         // Focus at the current posisiton.
         editor.markers.insertAtPoint(dropEvent.originalEvent);
@@ -85,13 +85,13 @@
         editor.selection.restore();
 
         // Insert HTML.
-        editor.html.insert('Element dropped here.')
+        editor.html.insert('Element dropped here.');
 
 
         dropEvent.preventDefault();
         dropEvent.stopPropagation();
         return false;
-      })
+      });
 
       // For Firefox to work.
       $('#dragme').on('dragstart', function (e) {

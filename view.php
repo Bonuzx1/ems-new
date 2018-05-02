@@ -1,15 +1,16 @@
 <?php include "includes/header.php";
-
+$msg = '';
+$msg = (isset($_GET['msg']))? $_GET['msg']:'';
 $post_id = $_GET['id'];
 $detail = $db->getOneValue('ems_post', 'post_id', $post_id);
 $post_title = $detail['post_title'];
 $post_content = $detail['post_content'];
 $post_image = $detail['post_image'];
-$post_author = $detail['post_author'];
-$user_temp = $db->getOneValue('ems_users', 'user_id', $post_author);
+$post_authorr = $detail['post_author'];
+$user_temp = $db->getOneValue('ems_users', 'user_id', $post_authorr);
 $post_author = $user_temp['user_first_name'];
-$post_cat = $detail['post_category'];
-$cat_temp = $db->getOneValue('ems_post_category', 'cat_id', $post_cat);
+$post_catt = $detail['post_category'];
+$cat_temp = $db->getOneValue('ems_post_category', 'cat_id', $post_catt);
 $post_cat = $cat_temp['cat_name'];
 $post_tags = explode(',', $detail['post_tags']);
 $date = $detail['post_date_created'];
@@ -28,11 +29,23 @@ $status = $detail['post_status'];
               <li class="active"><?=$post_cat?></li>
             </ol>
             <h1><?=$post_title?></h1>
-            <div class="post_commentbox"> <a href="search.php?sort=user"><i class="fa fa-user"></i><?=$post_author?></a> <span><i class="fa fa-calendar"></i><?=$date?></span> <a href="#"><i class="fa fa-tags"></i><?=$post_cat?></a> </div>
+            <div class="post_commentbox"> <a href="search.php?sort=user&id=<?=$post_authorr?>"><i class="fa fa-user"></i><?=$post_author?></a> <span><i class="fa fa-calendar"></i><?=$date?></span> <a href="search.php?sort=category&id=<?=$post_catt?>"><i class="fa fa-briefcase"></i><?=$post_cat?></a> </div>
                 <div class="single_page_content"> <?php echo '<img class="img-center" src="admin/uploads/blog_images/'.$post_image.'"/>';?>
               <p><?=$post_content?></p>
+                    <h2 class="single_post_content">
+                        <span>Tags</span>
+                    </h2>
+                    <div role="tabpanel" class="tab-pane active" id="category">
+                        <ul>
+                    <?php foreach ($post_tags as $tag){?>
+                    <li class="cat-item"><a href="<?='search.php?sort=tag&tag='.$tag?>"><?=$tag?></a></li>
+                    <?php }?>
+                        </ul>
+                    </div>
             <div class="social_link">
-                Share:
+                <h2 class="single_post_content">
+                    <span>Share:</span>
+                </h2>
               <ul class="sociallink_nav">
                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -41,6 +54,47 @@ $status = $detail['post_status'];
                 <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
               </ul>
             </div>
+                    <div class="contact_area">
+                        <h2>Your thoughts</h2>
+                        <p><b><b>NOTE: </b>Your comments will be reviewed before allowing it on this post ;)</b></p>
+                        <h4><?=$msg?></h4>
+                        <div class="twt-wrapper">
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <form action="admin/php_actions/addComment.php" class="contact_form" method="post">
+                                        <input required name="username" class="form-control" type="text" placeholder="Name*" minlength="3">
+                                        <input required name="post" type="hidden" value="<?=$_GET['id']?>">
+                                        <input class="form-control" name="useremail" type="email" placeholder="Email (Optional)">
+                                        <textarea minlength="20" name="commenttext" required class="form-control" cols="30" rows="3" placeholder="Thoughts*"></textarea>
+                                    <br />
+                                    <input href="#" type="submit" class="btn btn-primary btn-sm pull-right" name="submit" value="Share"/>
+                                    </form>
+                                    <div class="clearfix"></div>
+                                    <hr />
+                                    <ul class="media-list">
+                                        <?php $comments = $db->useRawQuery("SELECT * FROM ems_comment WHERE comment_post_id = ".$_GET['id']." AND comment_isApproved = '1'");
+	                                        foreach ($comments as $comment) {?>
+                                        <li class="media">
+                                            <a href="#" class="pull-left">
+                                                <img src="assets/img/1.png" alt="" class="img-circle">
+                                            </a>
+                                            <div class="media-body">
+                                        <span class="text-muted pull-right">
+                                            <small class="text-muted">30 min ago</small>
+                                        </span>
+                                                <strong class="text-success">@ <?=$comment['comment_username']?></strong>
+                                                <p>
+                                                    <?=$comment['comment_text']?>
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <?php }?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- TWEET WRAPPER END -->
+                    </div>
             <div class="related_post">
               <h2>Related Post <i class="fa fa-thumbs-o-up"></i></h2>
               <ul class="spost_nav wow fadeInDown animated">

@@ -88,18 +88,29 @@
 <div class="modal fade" id="ModalAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form class="form-horizontal" method="POST" action="php_actions/addEventSchedule.php">
+            <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="php_actions/addEventSchedule.php">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Add Event</h4>
                 </div>
                 <div class="modal-body">
-
+                    <div class="form-group">
+                        <label for="image" class="col-sm-2 control-label">Event Picture</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control filename" accept="image/*" name="image" id="image">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="title" class="col-sm-2 control-label">Title</label>
                         <div class="col-sm-10">
                             <input type="text" name="event_title" class="form-control" id="title" placeholder="Title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="col-sm-2 control-label">Venue</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="location" class="form-control" id="location" placeholder="Venue">
                         </div>
                     </div>
                     <div class="form-group">
@@ -128,7 +139,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" id="save_event" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>

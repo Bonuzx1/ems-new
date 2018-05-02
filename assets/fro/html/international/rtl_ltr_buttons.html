@@ -106,7 +106,7 @@
         }
 
         this.selection.restore();
-      }
+      };
 
       $.FroalaEditor.DefineIcon('rightToLeft', {NAME: 'long-arrow-left'});
       $.FroalaEditor.RegisterCommand('rightToLeft', {
@@ -117,7 +117,7 @@
         callback: function () {
           changeDirection.apply(this, ['rtl', 'right']);
         }
-      })
+      });
 
       $.FroalaEditor.DefineIcon('leftToRight', {NAME: 'long-arrow-right'});
       $.FroalaEditor.RegisterCommand('leftToRight', {

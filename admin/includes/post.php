@@ -48,7 +48,7 @@
                         $author = $db->getOneValue('ems_users', 'user_id', $value['post_author']);
                     ?>
                     <tr>
-                        <td><a href=<?php echo "?page=post&type=edit&id=".$value['post_id']; ?>><?php echo $value['post_title']?></a></td>
+                        <td><a style="color: #000;" href=<?php echo "?page=post&type=edit&id=".$value['post_id']; ?>><?=$value['post_title']?></a></td>
                         <td><?php echo $author['user_first_name']?></td>
                         <td><span class=""><?php echo $cat['cat_name']?></span></td>
                         <td>

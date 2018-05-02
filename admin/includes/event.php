@@ -1,6 +1,7 @@
 <?php
 ?>
 <!-- Content Header (Page header) -->
+
 <section class="content-header">
     <h1>
         Sidebar Collapsed
@@ -42,12 +43,16 @@
                     <?php
                     $allTable = $db->fillCombo('ems_event', 'event_status', '1');
                     foreach ($allTable as $value){
+                        $user = $db->getOneValue('ems_users', 'user_id', $value['event_author']);
                         ?>
                         <tr>
-                            <td><a href=<?php echo "?page=event&type=edit&id=".$value['event_id']; ?>><?php echo $value['event_title']?></a></td>
-                            <td><?php echo $value['event_author']?></td>
+                            <td><a style="color: #000;" href=<?php echo "?page=event&type=edit&id=".$value['event_id']; ?>><?php echo $value['event_title']?></a></td>
+                            <td><?php echo $user['user_first_name']?></td>
                             <td><span class="label label-success"><?php echo $value['event_date']?></span></td>
-                            <td><button class="" disabled><a href=<?php echo "?page=event&type=edit&id=".$value['event_id']; ?>>Edit</a></button> | <button class=""><a href="javascript:del('<?php echo $value['event_id'];?>','<?php echo $value['event_title'];?>')">Delete</a></button> </td>
+                            <td><button class="btn-default" disabled><a href='<?php echo "?page=event&type=edit&id=".$value['event_id']; ?>' disabled="disabled">Edit</a></button> |
+                                <button class="btn-danger"><a href="javascript:del('<?php echo $value['event_id'];?>','<?php echo $value['event_title'];?>')">Delete</a></button> |
+                                <button class="btn-bitbucket"><a href="?page=post&type=new&event=<?=$value['event_id']?>">Add Post</a></button>
+                            </td>
                         </tr>
                     <?php } ?>
                     </tbody>
@@ -62,6 +67,9 @@
         </div>
         <!-- /.box-footer -->
     </div>
+
+<!--    edit the event-->
+
 </section>
 
 <script type="text/javascript">

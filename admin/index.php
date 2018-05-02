@@ -27,8 +27,24 @@ if (isset($_GET['page'])&&!isset($_GET['type']))
     {
         include "includes/logout.php";
     }
+    elseif ($page == 'gallery')
+    {
+        include "includes/gallery.php";
+    }
+    elseif ($page == 'sreport')
+    {
+	    include "includes/sreport.php";
+    }
+    elseif ($page == 'ereport')
+    {
+	    include "includes/preport.php";
+    }
+    elseif ($page == 'comment')
+    {
+	    include "includes/comment.php";
+    }
 }
-if (isset($_GET['page'])&&isset($_GET['type']))
+elseif (isset($_GET['page'])&&isset($_GET['type']))
 {
     $page = $_GET['page'];
     $type = $_GET['type'];
@@ -49,6 +65,10 @@ if (isset($_GET['page'])&&isset($_GET['type']))
         {
             include 'includes/new-event.php';
         }
+        elseif ($type == 'edit')
+        {
+            include "includes/edit-event.php";
+        }
     }
     elseif ($page == 'users')
     {
@@ -61,6 +81,20 @@ if (isset($_GET['page'])&&isset($_GET['type']))
             include "includes/edit-user.php";
         }
     }
+    elseif ($page == 'gallery')
+    {
+        if ($type == 'new-img')
+        {
+            include "includes/new-image.php";
+        }
+        elseif ($type == 'new-vid')
+        {
+	        include "includes/new-video.php";
+        }
+    }
+}
+else{
+	include "includes/404.php";
 }
 
 

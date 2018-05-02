@@ -2,13 +2,13 @@
 include "../class/Ems.class.php";
 
 $ems = new Ems();
-
+$msg = '';
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
     if ($ems->delEvent($id))
     {
-        echo 'sucess';
+        $msg =  'Event Deleted Successfully';
     }else
-        echo "no";
-    header('Location: '.$_SERVER['HTTP_REFERER']);
+        $msg = "Error deleting event";
+    $ems->goToHeader(ADMIN_BASE_URL.'?page=event&msg='.$msg );
 }

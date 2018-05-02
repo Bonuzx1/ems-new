@@ -13,7 +13,7 @@ if(isset($_POST['submit']))
         header("Location: ../index.php");
     }
     else{
-        echo "<script>alert('wrong')</script>";
-        header('Location: '.$_SERVER['HTTP_REFERER']);
+        $msg = "Invalid Username or Password";
+        header('Location: '.$_SERVER['HTTP_REFERER']."&msg=".$msg);
     }
 }
